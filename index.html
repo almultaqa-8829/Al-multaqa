@@ -102,23 +102,10 @@
       const count = document.getElementById("cache-count");
       const progress = document.getElementById("cache-progress");
       const cache = window.applicationCache;
-      let hasSavedCache = false;
-
-      try {
-        hasSavedCache = localStorage.getItem("relapse-cache-ready") === "1";
-      } catch (error) { }
 
       function showState(text, state) {
         label.textContent = text;
         status.dataset.state = state;
-      }
-
-      function markCacheReady(text, detail) {
-        hasSavedCache = true;
-        try { localStorage.setItem("relapse-cache-ready", "1"); } catch (error) { }
-        progress.value = 1;
-        count.textContent = detail;
-        showState(text, "success");
       }
 
       if (!cache) {
@@ -137,27 +124,29 @@
           showState("Downloading cache...", "downloading");
         });
         cache.addEventListener("cached", () => {
-          markCacheReady("Cache downloaded successfully", "Saved offline");
+          progress.value = 1;
+          showState("Cache downloaded successfully", "success");
+          if (count.textContent === "Waiting") count.textContent = "Ready";
         });
         cache.addEventListener("noupdate", () => {
-          markCacheReady("Cache is ready", "Saved offline");
+          progress.value = 1;
+          count.textContent = "Up to date";
+          showState("Cache is ready", "success");
         });
         cache.addEventListener("updateready", () => {
-          markCacheReady("Cache update downloaded successfully", "Saved offline");
+          progress.value = 1;
+          showState("Cache update downloaded successfully", "success");
         });
-        cache.addEventListener("error", () => {
-          if (hasSavedCache) {
-            markCacheReady("Saved cache is available", "Offline copy ready");
-            return;
-          }
-          showState("Cache download failed", "error");
-        });
+        cache.addEventListener("error", () => showState("Cache download failed", "error"));
         cache.addEventListener("obsolete", () => showState("Cache manifest is unavailable", "error"));
 
         if (cache.status === cache.IDLE) {
-          markCacheReady("Cache is ready", "Saved offline");
+          progress.value = 1;
+          count.textContent = "Ready";
+          showState("Cache is ready", "success");
         } else if (cache.status === cache.UPDATEREADY) {
-          markCacheReady("Cache update downloaded successfully", "Saved offline");
+          progress.value = 1;
+          showState("Cache update downloaded successfully", "success");
         } else if (cache.status === cache.OBSOLETE) {
           showState("Cache manifest is unavailable", "error");
         } else if (cache.status === cache.DOWNLOADING) {
