@@ -35,7 +35,8 @@ def generate_cache_manifest(directory_path, include_directory_path=True, include
                     manifest_path = '/'
                 
             manifest_path = manifest_path.replace("\\","/")
-            manifest.append(manifest_path + " #" + file_hash)
+            manifest.append(manifest_path)
+            manifest.append("# SHA256 " + manifest_path + " " + file_hash)
 
     return manifest
 
