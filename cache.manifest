@@ -51,8 +51,6 @@ offsets/13.60.js
 payloads/kstuff.elf
 payloads/shadowmountplus.elf
 payloads/etaHEN.elf
-payloads/pldmgr.elf
-# pldmgr.elf SHA256: 62B3BA2A4937C2AFC502F9A4E7242CCA538610EBB4AE2800C7C6F72E7F268E7C
 payloads/kexp_2026_05_25.bin
 payloads/elfldr-ps5-1360.elf
 NETWORK:
