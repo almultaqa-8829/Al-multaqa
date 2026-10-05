@@ -1,9 +1,8 @@
 CACHE MANIFEST
 # Relapse Exploit page resources
 CACHE:
-/
 index.html
-logo.jpg
+mmhmm-cats-ps5.gif
 src/firmware.js
 src/main.js
 src/rop.js
